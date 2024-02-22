@@ -38,7 +38,6 @@ This script automates the installation of essential packages and utilities, enha
   - Configures additional repositories and imports GPG keys for software like `eza`.
 
 - Commonly Used Packages:
-- Commonly Used Packages:
   - [`fzf`](https://github.com/junegunn/fzf) - A command-line fuzzy finder.
   - [`git`](https://github.com/git/git) - Distributed version control system.
   - [`htop`](https://github.com/htop-dev/htop) - An interactive process viewer.
@@ -62,6 +61,6 @@ This script automates the installation of essential packages and utilities, enha
 
 You can edit the script to add or remove package installations or modify system configurations to fit your needs. The script is organized into sections for easy navigation and customization.
 
-## Support
+## Disclaimer
 
 This script is provided as-is, without warranty. If you encounter issues or have suggestions, please submit an issue or pull request on GitHub.
