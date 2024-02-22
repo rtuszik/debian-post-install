@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
 set -e
 
 printf "Initializing bootstrap...\n\n"
@@ -13,11 +15,17 @@ apt install -y wget gpg sudo openssh-server
 systemctl enable ssh
 systemctl start ssh
 
-# Ensure the current user is in the sudo group (replace 'current_user' with the actual username if this script is not run as the target user)
-current_user=$(whoami)
-if ! grep -q "^sudo:.*$current_user" /etc/group; then
-    usermod -aG sudo $current_user
-fi
+# Ensure the current user and 'rtuszik' are in the sudo group
+for user in $(whoami) rtuszik; do
+    if id "$user" &>/dev/null; then
+        echo "Adding $user to the sudo group..."
+        usermod -aG sudo "$user"
+    else
+        echo "User $user does not exist, skipping..."
+    fi
+done
+
+# Your existing functions (debian_post_install_sh, packages_install, docker_install) follow here
 
 debian_post_install_sh() {
     su - -c '
