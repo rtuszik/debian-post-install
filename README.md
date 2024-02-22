@@ -7,7 +7,7 @@ This script is designed to automate the post-installation setup for Debian syste
 To download and execute the script in one step, use the following command:
 
 ```sh
-wget -O bootstrap.sh "https://raw.githubusercontent.com/yourusername/yourrepository/yourbranch/bootstrap.sh" && sh bootstrap.sh
+wget -O bootstrap.sh "https://raw.githubusercontent.com/rtuszik/debian-post-install/main/bootstrap.sh" && sh bootstrap.sh
 ```
 
 ## Installed Packages and Utilities
