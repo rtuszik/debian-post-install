@@ -5,9 +5,19 @@ set -e
 printf "Initializing bootstrap...\n\n"
 printf "Updating system...\n\n"
 
-# Ensure wget and gpg are installed before they're needed
+# Update package lists and ensure wget, gpg, sudo, and openssh-server are installed before they're needed
 apt update
-apt install -y wget gpg
+apt install -y wget gpg sudo openssh-server
+
+# Ensure the SSH service is enabled and running
+systemctl enable ssh
+systemctl start ssh
+
+# Ensure the current user is in the sudo group (replace 'current_user' with the actual username if this script is not run as the target user)
+current_user=$(whoami)
+if ! grep -q "^sudo:.*$current_user" /etc/group; then
+    usermod -aG sudo $current_user
+fi
 
 debian_post_install_sh() {
     su - -c '
