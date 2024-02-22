@@ -12,9 +12,13 @@ printf "==== Initializing Bootstrap ====\n\n"
 # -------------------------------
 # SYSTEM UPDATE AND PACKAGE INSTALLATION
 # -------------------------------
-printf "Step 1: Updating system package database and installing required packages...\n"
+printf "Step 1: Ensuring non-free and contrib repositories are enabled...\n"
+# Add contrib and non-free to the main Debian repositories in sources.list if not already present
+sed -i '/^deb .*main/ s/$/ contrib non-free/' /etc/apt/sources.list
+
+printf "Updating system package database and installing required packages...\n"
 apt update
-# Installing basic utilities and openssh-server for remote access
+# Installing basic utilities, openssh-server, and firmware packages for better hardware compatibility
 apt install -y wget gpg sudo openssh-server ca-certificates curl lsb-release firmware-linux firmware-misc-nonfree
 printf "Completed: System update and basic packages installation.\n\n"
 
@@ -24,13 +28,10 @@ printf "Completed: System update and basic packages installation.\n\n"
 printf "Step 2: Configuring SSH service...\n"
 systemctl enable ssh
 systemctl start ssh
-printf "Completed: SSH service configured and started.\n\n"
-
 printf "Enabling SSH access for the root user...\n"
 sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 systemctl restart ssh
-printf "SSH access for the root user has been enabled.\n\n"
-
+printf "Completed: SSH service configured and root access enabled.\n\n"
 
 # -------------------------------
 # USER CONFIGURATION
@@ -45,13 +46,10 @@ printf "Completed: Current user (%s) added to the sudo group.\n\n" "$current_use
 # DEBIAN POST-INSTALLATION SETUP
 # -------------------------------
 printf "Step 4: Executing Debian post-installation setup...\n"
-# Modifying sources.list for additional repositories
-grep -q "contrib non-free" /etc/apt/sources.list || sed -i "s/main/main contrib non-free/g" /etc/apt/sources.list
+# Adding backports and configuring additional repositories
 DEBIAN_RELEASE_NAME=$(lsb_release -cs)
-# Adding backports
 echo "deb http://deb.debian.org/debian ${DEBIAN_RELEASE_NAME}-backports main contrib non-free" > /etc/apt/sources.list.d/debian-backports.list
 echo "deb-src http://deb.debian.org/debian ${DEBIAN_RELEASE_NAME}-backports main contrib non-free" >> /etc/apt/sources.list.d/debian-backports.list
-# Configuring additional repositories
 mkdir -p /etc/apt/keyrings
 wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
 echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | tee /etc/apt/sources.list.d/gierens.list
@@ -72,7 +70,6 @@ printf "Completed: Common packages installation.\n\n"
 # DOCKER INSTALLATION
 # -------------------------------
 printf "Step 6: Installing Docker and related packages...\n"
-apt update
 apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 printf "Completed: Docker and related packages installation.\n\n"
 
