@@ -6,30 +6,16 @@ DOCKER_REPO_URL="https://download.docker.com/linux/debian"
 EZA_GPG_URL="https://raw.githubusercontent.com/eza-community/eza/main/deb.asc"
 EZA_REPO_URL="http://deb.gierens.de"
 
-
 # Welcome message
 printf "==== Initializing Bootstrap ====\n\n"
 
-# Function to check and install lsb_release if missing
-ensure_lsb_release() {
-    if ! command -v lsb_release >/dev/null 2>&1; then
-        echo "lsb_release is required but not installed. Attempting to install it."
-        apt-get update && apt-get install -y lsb-release || { echo >&2 "Failed to install lsb-release. Exiting."; exit 1; }
-    fi
-}
-
-# Install lsb_release if necessary
-ensure_lsb_release
-
-# Get Debian codename (e.g., buster, bullseye, bookworm)
-debian_codename=$(lsb_release -sc)
+# Hardcode Debian codename to bookworm
+debian_codename="bookworm"
 
 # Adding non-free repositories
-add_nonfree_repositories() {
-    echo "Adding non-free repositories..."
-    add-apt-repository -y "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free-firmware"
-    add-apt-repository -y "deb-src http://deb.debian.org/debian/ $debian_codename main contrib non-free-firmware"
-}
+echo "Adding non-free repositories..."
+sudo add-apt-repository -y "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free"
+sudo add-apt-repository -y "deb-src http://deb.debian.org/debian/ $debian_codename main contrib non-free"
 
 # Initial system update
 apt_get_update() {
@@ -45,16 +31,15 @@ check_and_install_dependencies() {
     apt-get install -y curl wget gnupg sudo software-properties-common
 }
 
-# Add non-free repositories and update package lists
-add_nonfree_repositories
+# Update package lists
 apt_get_update
 
 # Check and install any missing dependencies
 check_and_install_dependencies
 
-# # Adding the non-free and non-free-firmware repositories for Debian Bookworm
-#echo "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/non-free-firmware.list
-
+# Adding the non-free and non-free-firmware repositories for Debian Bookworm
+echo "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/non-free-firmware.list
+echo "deb-src http://deb.debian.org/debian/ $debian_codename main contrib non-free non-free-firmware" | sudo tee -a /etc/apt/sources.list.d/non-free-firmware.list
 
 # Adding Docker's official GPG key and repository
 printf "Adding Docker's official GPG key and repository...\n"
@@ -70,7 +55,6 @@ mkdir -p /etc/apt/keyrings
 curl -fsSL $EZA_GPG_URL | gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
 echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] $EZA_REPO_URL stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
 apt_get_update
-
 
 # Updating system package database and installing required packages
 printf "Updating system package database and installing required packages...\n"
