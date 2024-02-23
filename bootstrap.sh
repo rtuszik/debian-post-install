@@ -52,8 +52,8 @@ apt_get_update
 # Check and install any missing dependencies
 check_and_install_dependencies
 
-# Adding the non-free and non-free-firmware repositories for Debian Bookworm
-echo "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/non-free-firmware.list
+# # Adding the non-free and non-free-firmware repositories for Debian Bookworm
+# echo "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/non-free-firmware.list
 
 
 # Adding Docker's official GPG key and repository
