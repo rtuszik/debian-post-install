@@ -12,10 +12,15 @@ printf "==== Initializing Bootstrap ====\n\n"
 # Hardcode Debian codename to bookworm
 debian_codename="bookworm"
 
-# Adding non-free repositories
-echo "Adding non-free repositories..."
-sudo add-apt-repository -y "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free"
-sudo add-apt-repository -y "deb-src http://deb.debian.org/debian/ $debian_codename main contrib non-free"
+# Add non-free firmware to sources.list
+echo "deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
+echo "deb-src http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
+
+echo "deb http://deb.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
+echo "deb-src http://deb.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
+
+echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
+echo "deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
 
 # Initial system update
 apt_get_update() {
@@ -36,10 +41,6 @@ apt_get_update
 
 # Check and install any missing dependencies
 check_and_install_dependencies
-
-# Adding the non-free and non-free-firmware repositories for Debian Bookworm
-echo "deb http://deb.debian.org/debian/ $debian_codename main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/non-free-firmware.list
-echo "deb-src http://deb.debian.org/debian/ $debian_codename main contrib non-free non-free-firmware" | sudo tee -a /etc/apt/sources.list.d/non-free-firmware.list
 
 # Adding Docker's official GPG key and repository
 printf "Adding Docker's official GPG key and repository...\n"
