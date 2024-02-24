@@ -24,23 +24,29 @@ echo "deb-src http://deb.debian.org/debian bookworm-updates main contrib non-fre
 
 # Initial system update
 apt_get_update() {
-    if ! apt-get update; then
-        echo >&2 "Failed to update package lists. Exiting."
-        exit 1
-    fi
+    apt-get update || echo >&2 "Failed to update package lists."
 }
 
-# Install missing dependencies
-check_and_install_dependencies() {
-    echo "Installing missing dependencies..."
-    apt-get install -y curl wget gnupg sudo software-properties-common
+install_failures=""
+
+
+attempt_install() {
+    for pkg in "$@"; do
+        if ! apt-get install -y "$pkg"; then
+            # Log package failure
+            install_failures="${install_failures}${pkg}\n"
+        fi
+    done
 }
 
 # Update package lists
 apt_get_update
 
-# Check and install any missing dependencies
-check_and_install_dependencies
+
+# Install missing dependencies
+echo "Installing missing dependencies..."
+attempt_install curl wget gnupg sudo software-properties-common
+
 
 # Adding Docker's official GPG key and repository
 printf "Adding Docker's official GPG key and repository...\n"
@@ -60,10 +66,7 @@ apt_get_update
 # Updating system package database and installing required packages
 printf "Updating system package database and installing required packages...\n"
 # Installing openssh-server and firmware packages for better hardware compatibility
-if ! apt-get install -y openssh-server firmware-linux firmware-misc-nonfree; then
-    echo >&2 "Failed to install required packages. Exiting."
-    exit 1
-fi
+attempt_install openssh-server firmware-linux firmware-misc-nonfree
 printf "Completed: System update and required packages installation.\n\n"
 
 # Configuring SSH service
@@ -90,19 +93,12 @@ fi
 
 # Installing commonly used packages
 printf "Installing commonly used packages...\n"
-if ! apt-get install -y fzf git htop lm-sensors unrar mc detox ncdu nfs-common; then
-    echo >&2 "Failed to install commonly used packages. Exiting."
-    exit 1
-fi
+attempt_install fzf git htop lm-sensors mc detox ncdu nfs-common unrar 
 printf "Completed: Common packages installation.\n\n"
 
 # Docker installation
 printf "Installing Docker and related packages...\n"
-if ! apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin; then
-    echo >&2 "Failed to install Docker and related packages. Exiting."
-    exit 1
-fi
-printf "Completed: Docker and related packages installation.\n\n"
+attempt_install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # Final cleanup
 apt-get autoremove -y
@@ -113,3 +109,10 @@ rm -rf /tmp/*
 apt update && apt upgrade -y
 
 printf "==== Bootstrap Complete!===="
+
+# Print failed installations
+if [ -n "$install_failures" ]; then
+    printf "The following packages failed to install:\n$install_failures"
+else
+    printf "All packages installed successfully.\n"
+fi
