@@ -108,11 +108,11 @@ rm -rf /tmp/*
 
 apt update && apt upgrade -y
 
-printf "==== Bootstrap Complete!===="
+printf "==== Bootstrap Complete!====\n"
 
 # Print failed installations
 if [ -n "$install_failures" ]; then
-    printf "The following packages failed to install:\n$install_failures"
+    printf "The following packages failed to install:\n%s\n" "$install_failures"
 else
     printf "All packages installed successfully.\n"
 fi
