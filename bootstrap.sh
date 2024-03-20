@@ -93,7 +93,7 @@ fi
 
 # Installing commonly used packages
 printf "Installing commonly used packages...\n"
-attempt_install fzf git htop lm-sensors mc detox ncdu nfs-common unrar 
+attempt_install fzf git htop lm-sensors mc detox ncdu nfs-common unrar micro 
 printf "Completed: Common packages installation.\n\n"
 
 # Docker installation
