@@ -12,16 +12,6 @@ printf "==== Initializing Bootstrap ====\n\n"
 # Hardcode Debian codename to bookworm
 debian_codename="bookworm"
 
-# Add non-free firmware to sources.list
-echo "deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
-echo "deb-src http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
-
-echo "deb http://deb.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
-echo "deb-src http://deb.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
-
-echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
-echo "deb-src http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware" | tee /etc/apt/sources.list.d/non-free-firmware.list
-
 # Initial system update
 apt_get_update() {
     apt-get update || echo >&2 "Failed to update package lists."
@@ -66,7 +56,7 @@ apt_get_update
 # Updating system package database and installing required packages
 printf "Updating system package database and installing required packages...\n"
 # Installing openssh-server and firmware packages for better hardware compatibility
-attempt_install openssh-server firmware-linux firmware-misc-nonfree
+attempt_install openssh-server firmware-linux
 printf "Completed: System update and required packages installation.\n\n"
 
 # Configuring SSH service
@@ -93,7 +83,7 @@ fi
 
 # Installing commonly used packages
 printf "Installing commonly used packages...\n"
-attempt_install fzf git htop lm-sensors mc detox ncdu nfs-common unrar micro 
+attempt_install fzf git htop lm-sensors mc detox ncdu nfs-common micro 
 printf "Completed: Common packages installation.\n\n"
 
 # Docker installation
