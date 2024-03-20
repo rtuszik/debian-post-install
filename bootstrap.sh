@@ -56,7 +56,7 @@ apt_get_update
 # Updating system package database and installing required packages
 printf "Updating system package database and installing required packages...\n"
 # Installing openssh-server and firmware packages for better hardware compatibility
-attempt_install openssh-server firmware-linux
+attempt_install openssh-server
 printf "Completed: System update and required packages installation.\n\n"
 
 # Configuring SSH service
@@ -104,5 +104,5 @@ printf "==== Bootstrap Complete!====\n"
 if [ -n "$install_failures" ]; then
     printf "The following packages failed to install:\n%s\n" "$install_failures"
 else
-    printf "All packages installed successfully.\n"
+    printf "All packages installed successfully."
 fi
