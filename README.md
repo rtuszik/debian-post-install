@@ -22,8 +22,6 @@ This script automates the installation of essential packages and utilities, enha
   - `ca-certificates`: Common CA certificates.
   - [`curl`](https://github.com/curl/curl) - A tool to transfer data from or to a server.
   - `lsb-release`: Provides information about the Linux Standard Base and distribution.
-  - `firmware-linux`: Firmware for Linux kernel drivers.
-  - `firmware-misc-nonfree`: Non-free firmware for various drivers.
 
 - SSH Configuration:
   - Configures and enables the SSH service for remote access.
@@ -40,13 +38,13 @@ This script automates the installation of essential packages and utilities, enha
 - Commonly Used Packages:
   - [`fzf`](https://github.com/junegunn/fzf) - A command-line fuzzy finder.
   - [`git`](https://github.com/git/git) - Distributed version control system.
-  - [`htop`](https://github.com/htop-dev/htop) - An interactive process viewer.
+  - [`btop`](https://github.com/aristocratos/btop) - Resource monitor that shows usage and stats for processor, memory, disks, network and processes.
   - [`lm-sensors`](https://github.com/lm-sensors/lm-sensors) - Utilities to read temperature/voltage/fan sensors.
-  - [`unrar`](https://www.rarlab.com/) - Unarchiver for .rar files. (Official site, no GitHub repository.)
   - [`mc` (Midnight Commander)](https://github.com/MidnightCommander/mc) - A powerful file manager.
   - [`detox`](https://github.com/dharple/detox) - Utility to clean up filenames.
   - [`ncdu`](https://dev.yorhel.nl/ncdu) - NCurses Disk Usage. (Official site, no GitHub repository.)
   - `nfs-common` - Support files for NFS clients. (Part of the NFS utilities, official page at [Linux NFS](https://linux-nfs.org/))
+  - [`micro`](https://github.com/zyedidia/micro) - Terminal-based text editor that aims to be easy to use and intuitive, while also taking advantage of the capabilities of modern terminals.
 
 - Docker Installation (All Docker-related packages are part of the Docker organization on GitHub):
   - Docker components including `docker-ce`, `docker-ce-cli`, `containerd.io`, `docker-buildx-plugin`, `docker-compose-plugin` can be explored at the [Docker GitHub](https://github.com/docker).
