@@ -17,4 +17,6 @@
 *_LOCAL_*.txt
 *_REMOTE_*.txt
 
+.history
+
 # End of https://www.toptal.com/developers/gitignore/api/Git
