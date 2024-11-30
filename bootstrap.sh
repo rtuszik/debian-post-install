@@ -79,7 +79,7 @@ fi
 
 # Installing commonly used packages
 printf "Installing commonly used packages...\n"
-attempt_install fzf git lm-sensors mc detox ncdu nfs-common micro btop
+attempt_install git lm-sensors mc ncdu nfs-common btop neovim
 printf "Completed: Common packages installation.\n\n"
 
 # Docker installation
