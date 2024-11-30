@@ -65,10 +65,6 @@ if ! systemctl is-enabled ssh >/dev/null || ! systemctl is-active ssh >/dev/null
     systemctl enable ssh
     systemctl start ssh
 fi
-printf "Enabling SSH access for the root user...\n"
-sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-systemctl restart ssh
-printf "Completed: SSH service configured and root access enabled.\n\n"
 
 # Configuring user permissions
 printf "Configuring user permissions...\n"
