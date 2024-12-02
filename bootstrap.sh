@@ -65,10 +65,6 @@ if ! systemctl is-enabled ssh >/dev/null || ! systemctl is-active ssh >/dev/null
     systemctl enable ssh
     systemctl start ssh
 fi
-printf "Enabling SSH access for the root user...\n"
-sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-systemctl restart ssh
-printf "Completed: SSH service configured and root access enabled.\n\n"
 
 # Configuring user permissions
 printf "Configuring user permissions...\n"
@@ -83,7 +79,7 @@ fi
 
 # Installing commonly used packages
 printf "Installing commonly used packages...\n"
-attempt_install fzf git lm-sensors mc detox ncdu nfs-common micro btop
+attempt_install git lm-sensors mc ncdu nfs-common btop neovim
 printf "Completed: Common packages installation.\n\n"
 
 # Docker installation
