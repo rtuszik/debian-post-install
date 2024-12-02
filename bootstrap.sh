@@ -3,8 +3,6 @@
 #define urls
 DOCKER_GPG_URL="https://download.docker.com/linux/debian/gpg"
 DOCKER_REPO_URL="https://download.docker.com/linux/debian"
-EZA_GPG_URL="https://raw.githubusercontent.com/eza-community/eza/main/deb.asc"
-EZA_REPO_URL="http://deb.gierens.de"
 
 # Welcome message
 printf "==== Initializing Bootstrap ====\n\n"
@@ -46,13 +44,6 @@ chmod a+r /etc/apt/keyrings/docker.asc
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] $DOCKER_REPO_URL $debian_codename stable" | tee /etc/apt/sources.list.d/docker.list
 apt_get_update
 
-# Adding eza's repository correctly
-printf "Adding eza's repository...\n"
-mkdir -p /etc/apt/keyrings
-curl -fsSL $EZA_GPG_URL | gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] $EZA_REPO_URL stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
-apt_get_update
-
 # Updating system package database and installing required packages
 printf "Updating system package database and installing required packages...\n"
 # Installing openssh-server and firmware packages for better hardware compatibility
@@ -79,7 +70,7 @@ fi
 
 # Installing commonly used packages
 printf "Installing commonly used packages...\n"
-attempt_install git lm-sensors mc ncdu nfs-common btop neovim
+attempt_install git lm-sensors ncdu nfs-common btop neovim
 printf "Completed: Common packages installation.\n\n"
 
 # Docker installation
